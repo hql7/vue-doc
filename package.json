@@ -1,0 +1,16 @@
+{
+  "name": "vuedocs",
+  "version": "1.0.0",
+  "description": "react风格的vue文档",
+  "main": "index.js",
+  "author": "weilan",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
