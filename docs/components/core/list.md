@@ -1,64 +1,12 @@
-# 条件与循环
-
-## 条件渲染
-顾名思义：是根据一定条件来判断某段内容显示不显示。
-
-我们的日常开发中，遇到某些内容显示隐藏切换弹出等是很普遍的事，在vue中，控制切换一个元素是否显示也相当简单：
-```vue
-<template>
-  <div>
-    <p v-if="layout.if">我被创建出来啦！</p>
-    <p v-show="layout.show">我被显示出来啦！</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data(){
-    return {
-      layout:{
-        if: true,
-        show: true
-      }
-    }
-  }
-}
-</script>
-```
-此时你可以在页面上看到上面的两句消息。当你将`layout.if`和`layout.show`改为false时，上面的两句话就会消失。不同的是：`我被创建出来啦`这句话的内容和DOM节点都从html中移除了；  
-而`我被显示出来啦！`这句话的内容和DOM节点只是被改为了`display: none;`。  
-因此你知道：v-if是完全的移除和创建，每次都有重新创建和删除的开销。v-show是一直存在，不管用不用都占据着一定的开销。通常我们将不频繁变动的内容使用v-if，频繁变动的使用v-show。  
-当然这只是一般情况，具体可以根据你项目的环境特性和自己的理解还酌情使用。  
-另外：通过上面的描述隐藏了另一个信息：v-if每次都会重新走一遍生命周期，而v-show会在一开始走一遍生命周期，后面只是display隐藏显示的变化。
-
-### 多个条件
-```vue
-<template>
-  <div>
-    <p v-if="num > 5">我大于5</p>
-    <p v-else-if="num >= 0">我0-5</p>
-    <p v-else>我小于0</p>
-  </div>
-</template>
-
-<script>
-export default {
-  data(){
-    return {
-      num: 3
-    }
-  }
-}
-</script>
-```
-
-## 列表渲染
+# 列表渲染
+我们可以用 `v-for` 指令基于一个数组来渲染一个列表。`v-for` 指令需要使用 `item in items `形式的特殊语法，其中 `items` 是源数据数组，而 `item `则是被迭代的数组元素的别名。
+## 简单例子
 当你遇到一个List或者一个select下拉框，通常我们不会一行一行代码将所有选项都敲出来，事实上你也无法得知具体有列表中多少条数据，因此vue提供了列表渲染来解决这个问题，它看起来像是在dom结构中写了一个for循环：
 ```vue
 <template>
   <div>
     <ul>
-      <li v-for="item in list" :key="item.id">{{item.name}}</li>
+      <li v-for="item in list" :key="item.id"> {{ item.name }} </li>
     </ul>
   </div>
 </template>
@@ -80,6 +28,32 @@ export default {
 页面上会显示出来一个ul列表。  
 > 还记得上节`元素渲染`讲的两种数据绑定形式吗？ 冒号+属性`:key="item.id"`和双花括号 {{`item.name`}}
 
+## 在v-for里使用对象
+不常见的用法
+```vue
+<template>
+  <div>
+    <ul>
+      <li v-for="value in object" :key="value"> {{ value }} </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      object: {
+        name: 'LiLei',
+        age: 27,
+        lover:'HanMeimei'
+      }
+    }
+  }
+}
+</script>
+```
+## for循换的数据源处理
 很多时候我们接收到的后台api数据都会是一个列表的形成，v-for也是vue中使用频率最高的一个核心概念之一。  
 但我们平时仍会遇到自己需要加工处理列表数据的问题，这时候我们只需要在生命周期或函数方法中正常的使用js操作即可，页面渲染的部分vue会帮我们处理：
 ```vue
@@ -136,7 +110,7 @@ export default {
 ```
 在v-for循环中, `item in list`中的item可以自行命名，就像日常写js for循环中的i，里面可以拿到当前i的数据，并按需求使用两种数据绑定方式进行处理。
 
-这里需要注意的一点是：为了vue循环生成dom节点的准确性和高性能，必须在for循环中使用`:key=""`，通常是绑定后端数据的id字段，或者其他唯一标识，切记不要使用索引`index`，这将削弱vue的性能算法。
+这里需要注意的一点是：为了vue循环生成dom节点的准确性和高性能，必须在for循环中使用`:key=""`，通常是绑定后端数据的id字段，或者其他唯一标识，切记不要使用索引`index`，这将削弱vue的对比算法性能。
 
 ## 用在下拉框内的循环
 ```vue
@@ -206,7 +180,7 @@ export default {
 }
 </script>
 ```
-> 或者使用计算函数，对于计算函数本身在下面章节介绍
+> 或者使用计算函数
 ```vue
 <template>
   <div>
