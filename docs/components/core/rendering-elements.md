@@ -85,6 +85,27 @@ export default {
 打开F12可以看到，我们写的1秒钟后更换名字的代码，vue只更换了里面的内容，而没有重新生成外面的`<div></div>`节点；  
 同样的，当你的vue文件已经很大很复杂之后，vue仍能从中找到需要更新的那一部分而不是全部重新生成。一定时日后，你可以自行深入双向数据绑定的原理及其性能实现。
 
+## 在html模板内使用表达式
+通常我们在script内处理js逻辑部分，在template处理dom结构，但有时候你也许仍想在html模板中使用js表达式来简化操作。  
+更多时候我们可以通过函数或者计算函数就能很方便又合理的进行处理，当然具体那种方式还需要你根据实际情况来权衡。
+```vue
+<template>
+  <div>
+    Hello, {{name ? name : 'han mei mei'}}
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      name: 'Lilei',
+    }
+  },
+}
+</script>
+```
+
 ## 添加一点样式
 ```vue
 <template>
